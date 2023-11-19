@@ -6,7 +6,7 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 10:51:19 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/19 20:30:42 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/11/19 21:05:44 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ char *fill_line_buffer(int fd, char *left_l, char *buffer)
 	while (bytes > 0)
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
-		//printf ("bytes : %zd\n", bytes);
+		// printf ("bytes : %zd\n", bytes);
 		if (bytes == -1)
 			return (NULL);
 		else if (bytes == 0)
 			break;
 		buffer[bytes] = '\0';
+		// printf ("[%s]\n", buffer);
 		if (!left_l)
 			left_l = ft_strdup("");
 		tmp = left_l;
@@ -52,16 +53,16 @@ char	*set_left(char *line)
 	i = 0;
 	if(!line)
 		return (NULL);
+	if (line[0] == '\n' && !line[1])
+		return (NULL);
 	while (line[i] && line[i] != '\n')
 		i++;
-	if (!line[i] || !line[i + 1])
-	{
-		line[i] = '\0';
-		return (NULL);
-	}
 	//printf ("[%s]\n", line);
+	if (!line[i])
+		return (NULL);
 	left_l = ft_substr(line, i + 1, ft_strlen(line) - i - 1);
-	line[i] = '\0';
+	line[i + 1] = '\0';
+	//printf("[%s]", line);
 	if (!left_l)
 		return (line);
 	return (left_l);
@@ -71,7 +72,7 @@ char *get_next_line(int fd)
 	static char	*left_l;
 	char		*buffer;
 	char		*line;
-	
+
 	buffer = malloc (sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
@@ -96,12 +97,12 @@ char *get_next_line(int fd)
 // int main()
 // {
 // 	char *str;
-// 	int fd = open ("one_line_no_nl.txt", O_RDONLY);
-// 	for (int i = 0; i < 1; i++)
+// 	int fd = open ("files/variable_nls.txt", O_RDONLY);
+// 	for (int i = 0; i < 8; i++)
 // 	{
 // 		//printf (":%d:\n", i);
 // 		str = get_next_line(fd);
-// 		printf("[%s]\n", str);
+// 		//printf("[%s]\n", str);
 // 		free (str);
 // 	}
 // 	// char buffer[BUFFER_SIZE];
