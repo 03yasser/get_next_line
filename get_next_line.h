@@ -6,7 +6,7 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 10:48:25 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/19 17:58:10 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/11/19 20:29:16 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <stdlib.h>
 
 
-# define BUFFER_SIZE 2000
+//# define BUFFER_SIZE 1
 char	*get_next_line(int fd);
 char	*fill_line_buffer(int fd, char *left_c, char *buffer);
 char	*set_left(char *line);

@@ -6,7 +6,7 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:00:49 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/19 16:43:39 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/11/19 20:10:06 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i])
 		i++;
@@ -85,14 +87,14 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 
 
-int nl_exist(char * buffer)
+int nl_exist(char *buffer)
 {
 	size_t i;
 
 	if (!buffer)
 		return (0);
 	i = 0;
-	while (buffer[i++])
+	while (buffer[i])
 	{
 		if (buffer[i] == '\n')
 			return (1);

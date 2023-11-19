@@ -6,7 +6,7 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 10:51:19 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/19 17:58:06 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/11/19 20:30:42 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 char *fill_line_buffer(int fd, char *left_l, char *buffer)
 {
-	ssize_t bytes;
+	ssize_t	bytes;
 	char	*tmp;
 
 	bytes = 1;
-	if (left_l)
+	if (left_l != NULL)
 	{
 		if (nl_exist(left_l))
 			return (left_l);
@@ -26,6 +26,7 @@ char *fill_line_buffer(int fd, char *left_l, char *buffer)
 	while (bytes > 0)
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
+		//printf ("bytes : %zd\n", bytes);
 		if (bytes == -1)
 			return (NULL);
 		else if (bytes == 0)
@@ -35,6 +36,7 @@ char *fill_line_buffer(int fd, char *left_l, char *buffer)
 			left_l = ft_strdup("");
 		tmp = left_l;
 		left_l = ft_strjoin(tmp, buffer);
+		//printf ("line : [%s]\n",left_l);
 		free (tmp);
 		tmp = NULL;
 		if (nl_exist(left_l))
@@ -78,6 +80,7 @@ char *get_next_line(int fd)
 		free(buffer);
 		free(left_l);
 		left_l = NULL;
+		buffer = NULL;
 		return (NULL);
 	}
 	line = fill_line_buffer(fd, left_l, buffer);
@@ -93,8 +96,8 @@ char *get_next_line(int fd)
 // int main()
 // {
 // 	char *str;
-// 	int fd = open ("tst", O_RDONLY);
-// 	for (int i = 0; i < 5; i++)
+// 	int fd = open ("one_line_no_nl.txt", O_RDONLY);
+// 	for (int i = 0; i < 1; i++)
 // 	{
 // 		//printf (":%d:\n", i);
 // 		str = get_next_line(fd);
