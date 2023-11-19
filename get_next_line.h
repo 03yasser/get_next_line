@@ -6,7 +6,7 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 10:48:25 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/18 21:06:43 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/11/19 17:58:10 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,15 @@
 # include <stdlib.h>
 
 
-# define BUFFER_SIZE 100
-void	*ft_calloc(size_t count, size_t size);
+# define BUFFER_SIZE 2000
 char	*get_next_line(int fd);
-char	*fill_line_buffer(int fd, char *left_c);
-char	*set_left(const char *s);
-char	*ft_substr(char *s);
+char	*fill_line_buffer(int fd, char *left_c, char *buffer);
+char	*set_left(char *line);
+char	*ft_substr(char *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *s);
+int nl_exist(char * buffer);
+char	*ft_strdup(const char *s1);
+char	*ft_strjoin(char const *s1, char const *s2);
+void	ft_bzero(void *s, size_t n);
 
 # endif

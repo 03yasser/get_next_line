@@ -6,7 +6,7 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:00:49 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/18 21:18:13 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/11/19 16:43:39 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,6 @@ void	ft_bzero(void *s, size_t n)
 		*(char *)(s + i) = 0;
 		i++;
 	}
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	char	*p;
-
-	if ((int) count < 0 && (int) size < 0)
-		return (NULL);
-	if ((size && count > (4294967295 / size)))
-		return (NULL);
-	p = malloc (count * size);
-	if (!p)
-		return (NULL);
-	ft_bzero(p, count * size);
-	return (p);
 }
 
 size_t	ft_strlen(const char *s)
@@ -99,31 +84,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 }
 
 
-char	*set_left(const char *s)
-{
-	char	*p;
-	size_t	i;
 
-	i = 0;
-	if(!s)
-		return (NULL);
-	while (i < ft_strlen(s))
-	{
-		if (s[i] == '\n' && s[i + 1])
-		{
-			if (s[i + 1])
-			{
-				p = (char *)(s + i + 1);
-				return (p);
-			}
-			else
-				return (NULL);
-		}
-		i++;
-	}
-	return (NULL);
-}
-static int nl_exist(char * buffer)
+int nl_exist(char * buffer)
 {
 	size_t i;
 
@@ -138,62 +100,27 @@ static int nl_exist(char * buffer)
 	}
 	return (0);
 }
-char	*ft_substr(char *s)
+char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	size_t	i;
-	char	*p;
-	size_t len;
+	char	*str;
 
-	len = 0;
-	i = 0;
 	if (!s)
 		return (NULL);
-	while (s[len] && s[len] != '\n')
-		len++;
-	p = malloc ((len + 1) * sizeof(char));
+	if (start > ft_strlen(s))
+		return (malloc(1));
+	if (len > ft_strlen(s + start))
+		len = ft_strlen(s + start);
+	str = malloc((len + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	i = 0;
 	while (i < len)
 	{
-			p[i] = s[i];
-			i++;
+		str[i] = s[start + i];
+		i++;
 	}
-	p[i] = '\0';
-	return (p);
+	str[i] = 0;
+	return (str);
 }
 
-char *fill_line_buffer(int fd, char *left_c)
-{
-	size_t	bytes;
-	char	*p;
-	char 	*buffer;
-
-	if (!left_c && nl_exist(left_c))
-		return (left_c);
-	buffer = calloc(BUFFER_SIZE, sizeof(char));
-	if (!buffer)
-		return (NULL);
-	bytes = read(fd, buffer, BUFFER_SIZE);
-	//printf ("[%zu][%s]\n", bytes,buffer);
-	if (bytes <= 0)
-	{
-		free(buffer);
-		return (NULL);
-	}
-	else if (left_c != NULL && !nl_exist(left_c))
-		p = ft_strjoin(left_c, buffer);
-	else
-		p = ft_strdup(buffer);
-	printf ("%s\n", p);
-	while (bytes > 0 && !nl_exist(buffer))
-	{
-		//printf ("%s\n", p);
-		free(buffer);
-		buffer = ft_calloc(sizeof(char), BUFFER_SIZE);
-		bytes = read(fd, buffer, BUFFER_SIZE);
-		p = ft_strjoin(p, buffer);
-		//printf ("[%zu][%s]\n", bytes,buffer);
-		if (buffer == NULL)
-			return (NULL);
-	}
-	free (buffer);
-	return (p);
-}
