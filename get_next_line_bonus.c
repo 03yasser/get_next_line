@@ -6,7 +6,7 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:50:17 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/20 21:32:41 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:41:30 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,17 @@ char	*set_left(char *line)
 		return (line);
 	return (left_l);
 }
+static void allfree(char **left_l)
+{
+    int i;
+
+    i = 0;
+    while (i < 100)
+    {
+        free(left_l[i]);
+        i++;
+    }
+}
 static char **left_lallocation()
 {
     char **left_l;
@@ -111,8 +122,8 @@ char *get_next_line(int fd)
 	if (fd < 0 || read(fd, 0, 0) < 0)
 	{
 		free(buffer);
-		free(left_l);
-		left_l[fd] = NULL;
+		allfree(left_l);
+		left_l = NULL;
 		buffer = NULL;
 		return (NULL);
 	}
