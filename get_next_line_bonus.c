@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 10:51:19 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/20 16:25:38 by yboutsli         ###   ########.fr       */
+/*   Created: 2023/11/20 20:50:17 by yboutsli          #+#    #+#             */
+/*   Updated: 2023/11/20 21:32:41 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
+
 
 char *fill_line_buffer(int fd, char *left_l, char *buffer)
 {
@@ -80,58 +81,56 @@ char	*set_left(char *line)
 		return (line);
 	return (left_l);
 }
+static char **left_lallocation()
+{
+    char **left_l;
+    int i;
+
+    left_l = malloc (sizeof(char *) * 100);
+    if (!left_l)
+        return (NULL);
+    i = 0;
+    while (i < 100)
+    {
+        left_l[i] = NULL;
+        i++;
+    }
+    return (left_l);
+}
 char *get_next_line(int fd)
 {
-	static char	*left_l;
+	static char	**left_l = NULL;
 	char		*buffer;
 	char		*line;
 
 	buffer = malloc (sizeof(char) * (BUFFER_SIZE + 1));
+    if (!left_l)
+        left_l = left_lallocation();
 	if (!buffer)
 		return (NULL);
 	if (fd < 0 || read(fd, 0, 0) < 0)
 	{
 		free(buffer);
 		free(left_l);
-		left_l = NULL;
+		left_l[fd] = NULL;
 		buffer = NULL;
 		return (NULL);
 	}
-	line = fill_line_buffer(fd, left_l, buffer);
+	line = fill_line_buffer(fd, left_l[fd], buffer);
 	//printf("[%s]\n", line);
 	free (buffer);
 	buffer = NULL;
 	if (!line || line[0] == '\0')
 	{
-		free (left_l);
-		left_l = NULL;
+		free (left_l[fd]);
+		left_l[fd] = NULL;
 		return (NULL);
 	}
-	left_l = set_left(line);
+	left_l[fd] = set_left(line);
 	if (!line)
 	{
-		left_l = NULL;
+		left_l[fd] = NULL;
 	}
 	//printf("[%s]\n", left_l);
 	return (line);
 }
-
-// int main()
-// {
-// 	char *str;
-// 	int fd = open ("files/variable_nls.txt", O_RDONLY);
-// 	for (int i = 0; i < 15; i++)
-// 	{
-// 		//printf (":%d:\n", i);
-// 		str = get_next_line(fd);
-// 		printf("[%s] ", str);
-// 		free (str);
-// 	}
-// 	// char buffer[BUFFER_SIZE];
-// 	// for (int i = 0; i < 4 ; i++)
-// 	// {
-// 	// 	int bytes = read (fd, buffer, BUFFER_SIZE);
-// 	// 	printf ("[%d][%s]\n",bytes, buffer);
-// 	// }
-// 	close (fd);
-// }

@@ -1,24 +1,26 @@
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int main()
 {
 
 	char *str;
-	int fd = open ("tst", O_RDONLY);
-	// for (int i = 0; i < 5; i++)
-	// {
-	// 	str = get_next_line(fd);
-	// 	//printf("[%s]\n", str);
-	// 	free (str);
-	// }
+	int fd1 = open ("tst1", O_RDONLY);
+	int fd2 = open ("tst2", O_RDONLY);
 	char *buffer;
 	
-	for (int i = 0; i < 4 ; i++)
+	for (int i = 0; i < 2 ; i++)
 	{
-		buffer = calloc (BUFFER_SIZE,1);
-		int bytes = read (fd, buffer, BUFFER_SIZE);
-		printf ("[%d][%s]\n",bytes, buffer);
-		free(buffer);
+		str = get_next_line(fd1);
+		printf ("[%s]", str);
+		free (str);
 	}
-	close (fd);
+	printf ("\n");
+	for (int i = 0; i < 4; i++)
+	{
+		str = get_next_line(fd2);
+		printf ("[%s]", str);
+		free (str);
+	}
+	close (fd1);
+	close (fd2);
 }
