@@ -6,7 +6,7 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 10:51:19 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/20 16:25:38 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:30:36 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,23 +115,3 @@ char *get_next_line(int fd)
 	//printf("[%s]\n", left_l);
 	return (line);
 }
-
-// int main()
-// {
-// 	char *str;
-// 	int fd = open ("files/variable_nls.txt", O_RDONLY);
-// 	for (int i = 0; i < 15; i++)
-// 	{
-// 		//printf (":%d:\n", i);
-// 		str = get_next_line(fd);
-// 		printf("[%s] ", str);
-// 		free (str);
-// 	}
-// 	// char buffer[BUFFER_SIZE];
-// 	// for (int i = 0; i < 4 ; i++)
-// 	// {
-// 	// 	int bytes = read (fd, buffer, BUFFER_SIZE);
-// 	// 	printf ("[%d][%s]\n",bytes, buffer);
-// 	// }
-// 	close (fd);
-// }
