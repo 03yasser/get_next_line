@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 10:51:19 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/30 16:32:45 by yboutsli         ###   ########.fr       */
+/*   Created: 2023/11/20 20:50:17 by yboutsli          #+#    #+#             */
+/*   Updated: 2023/11/30 16:34:19 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
+
 
 static char	*ft_strchr(char *s)
 {
@@ -81,7 +82,7 @@ static char	*set_left(char *line)
 
 char	*get_next_line(int fd)
 {
-	static char	*left_l;
+	static char	*left_l[100];
 	char		*buffer;
 	char		*line;
 
@@ -92,18 +93,18 @@ char	*get_next_line(int fd)
 	{
 		free(buffer);
 		free(left_l);
-		left_l = NULL;
+		left_l[fd] = NULL;
 		buffer = NULL;
 		return (NULL);
 	}
-	line = fill_line_buffer(fd, left_l, buffer);
+	line = fill_line_buffer(fd, left_l[fd], buffer);
 	free (buffer);
 	buffer = NULL;
 	if (!line)
 	{
-		left_l = NULL;
+		left_l[fd] = NULL;
 		return (NULL);
 	}
-	left_l = set_left(line);
+	left_l[fd] = set_left(line);
 	return (line);
 }
