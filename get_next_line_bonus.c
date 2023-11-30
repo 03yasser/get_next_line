@@ -6,7 +6,7 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:50:17 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/30 17:30:25 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:57:16 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static char	*set_left(char *line)
 
 char	*get_next_line(int fd)
 {
-	static char	*left_l[1000];
+	static char	*left_l[10240];
 	char		*buffer;
 	char		*line;
 
