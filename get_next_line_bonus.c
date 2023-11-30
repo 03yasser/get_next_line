@@ -6,7 +6,7 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:50:17 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/30 16:34:19 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:30:25 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static char	*set_left(char *line)
 
 char	*get_next_line(int fd)
 {
-	static char	*left_l[100];
+	static char	*left_l[1000];
 	char		*buffer;
 	char		*line;
 
@@ -92,7 +92,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
 	{
 		free(buffer);
-		free(left_l);
+		free(left_l[fd]);
 		left_l[fd] = NULL;
 		buffer = NULL;
 		return (NULL);
