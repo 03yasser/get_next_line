@@ -6,12 +6,27 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:50:17 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/30 17:57:16 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/12/01 01:43:01 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
+static void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	size_t	i;
+
+	if (!dst && !src)
+		return (NULL);
+	i = 0;
+	while (i < n)
+	{
+		*(char *)(dst + i) = *(char *)(src + i);
+		i++;
+	}
+	*(char *)(dst + i) = '\0';
+	return (dst);
+}
 
 static char	*ft_strchr(char *s)
 {
@@ -45,9 +60,8 @@ static char	*fill_line_buffer(int fd, char *left_l, char *buffer)
 			free(left_l);
 			return (NULL);
 		}
-		else
-			if (bytes == 0)
-				break ;
+		if (bytes == 0)
+			break ;
 		buffer[bytes] = '\0';
 		tmp = left_l;
 		left_l = ft_strjoin(tmp, buffer);
@@ -57,26 +71,32 @@ static char	*fill_line_buffer(int fd, char *left_l, char *buffer)
 	return (left_l);
 }
 
-static char	*set_left(char *line)
+static char	*set_left(char **line)
 {
 	char	*left_l;
 	size_t	i;
+	char	*tmp;
 
 	i = 0;
-	while (line[i] && line[i] != '\n')
+	while (line[0][i] != '\0' && line[0][i] != '\n')
 		i++;
-	if (line[i] == '\0' || line[1] == '\0')
+	if (line[0][i] == '\0' || line[0][1] == '\0')
 	{
 		line = NULL;
 		return (NULL);
 	}
-	left_l = ft_substr(line, i + 1, ft_strlen(line) - i - 1);
+	left_l = ft_substr(line[0], i + 1, ft_strlen(line[0]) - i - 1);
 	if (!left_l || left_l[0] == '\0')
 	{
 		free (left_l);
 		left_l = NULL;
 	}
-	line[i + 1] = '\0';
+	tmp = (char *)malloc (sizeof(char) * (i + 2));
+	if (!tmp)
+		return (NULL);
+	ft_memcpy(tmp, *line, i + 1);
+	free(line[0]);
+	*line = tmp;
 	return (left_l);
 }
 
@@ -86,17 +106,16 @@ char	*get_next_line(int fd)
 	char		*buffer;
 	char		*line;
 
+	if (fd < 0 || fd > 10240 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
+	{
+		if (fd >= 0 && left_l[fd] != NULL)
+			free(left_l[fd]);
+		left_l[fd] = NULL;
+		return (NULL);
+	}
 	buffer = malloc (sizeof(char) * ((size_t)BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
-	if (fd < 0 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
-	{
-		free(buffer);
-		free(left_l[fd]);
-		left_l[fd] = NULL;
-		buffer = NULL;
-		return (NULL);
-	}
 	line = fill_line_buffer(fd, left_l[fd], buffer);
 	free (buffer);
 	buffer = NULL;
@@ -105,6 +124,5 @@ char	*get_next_line(int fd)
 		left_l[fd] = NULL;
 		return (NULL);
 	}
-	left_l[fd] = set_left(line);
-	return (line);
+	return (left_l[fd] = set_left(&line), line);
 }

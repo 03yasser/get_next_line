@@ -6,7 +6,7 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:00:49 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/11/30 16:33:41 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/12/01 01:24:52 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	size_t	i;
 	char	*str;
 
-	if (!s)
-		return (NULL);
 	str = malloc((len + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
