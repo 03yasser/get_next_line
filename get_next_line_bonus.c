@@ -6,7 +6,7 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:50:17 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/12/02 21:49:06 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:47:25 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,15 +102,17 @@ static char	*set_left(char **line)
 
 char	*get_next_line(int fd)
 {
-	static char	*left_l[10240];
+	static char	*left_l[OPEN_MAX];
 	char		*buffer;
 	char		*line;
 
-	if (fd < 0 || fd > 10240 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > OPEN_MAX || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
 	{
 		if (fd >= 0 && left_l[fd] != NULL)
+		{
 			free(left_l[fd]);
-		left_l[fd] = NULL;
+			left_l[fd] = NULL;
+		}
 		return (NULL);
 	}
 	buffer = malloc (sizeof(char) * ((size_t)BUFFER_SIZE + 1));

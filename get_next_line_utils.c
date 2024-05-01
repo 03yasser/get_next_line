@@ -6,7 +6,7 @@
 /*   By: yboutsli <yboutsli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:00:49 by yboutsli          #+#    #+#             */
-/*   Updated: 2023/12/01 01:24:52 by yboutsli         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:37:52 by yboutsli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,25 +50,24 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	len_s1;
 	size_t	len_s2;
 	size_t	i;
-	size_t	j;
+	ssize_t	j;
 
 	i = 0;
-	j = 0;
+	j = -1;
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen (s2);
+	if (len_s1 == 0 && len_s2 == 0)
+		return (NULL);
 	p = (char *)malloc (sizeof(char) * (len_s1 + len_s2 + 1));
-	if (!p || (!s1 && !s2))
+	if (!p)
 		return (NULL);
 	while (i < len_s1 && s1[i])
 	{
 		p[i] = s1[i];
 		i++;
 	}
-	while (j < len_s2 && s2[j])
-	{
+	while (++j < (ssize_t)len_s2 && s2[j])
 		p[i + j] = s2[j];
-		j++;
-	}
 	p[j + i] = '\0';
 	return (p);
 }
